@@ -1,0 +1,88 @@
+/* Typography & Structural Constraints */
+.fw-extrabold { font-weight: 800; }
+.fw-black { font-weight: 900; }
+.max-w-700 { max-width: 700px; }
+.max-w-1000 { max-width: 1000px; }
+.select-none { user-select: none; }
+.z-1 { z-index: 2; }
+
+/* Custom Dark background overlay layout grid */
+.services-carousel-section {
+  background-color: #0b0b0d !important;
+}
+
+.tracking-wider {
+  letter-spacing: 1.5px;
+}
+
+/* Image responsive limits configuration */
+.min-h-350 {
+  min-height: 450px;
+}
+
+/* Large Number Watermark behind the content */
+.watermark-num {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  font-size: 11rem;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.03);
+  line-height: 1;
+  z-index: 0;
+}
+
+/* Custom Checklist Icon Styling */
+.check-list li {
+  font-size: 0.95rem;
+  color: #495057;
+}
+.check-icon {
+  font-weight: 900;
+}
+
+/* Clean Custom Slider Control Buttons */
+.custom-carousel-btn {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 15px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-carousel-btn:hover {
+  background-color: var(--bs-warning);
+}
+
+.custom-carousel-btn:hover .carousel-control-prev-icon,
+.custom-carousel-btn:hover .carousel-control-next-icon {
+  filter: invert(1) grayscale(1) brightness(0); /* Swaps arrow to black on hover */
+}
+
+/* Button Interactive States */
+.btn-hover-dark:hover {
+  background-color: #212529 !important;
+  border-color: #212529 !important;
+  color: #ffffff !important;
+}
+
+/* Responsive adjustment layer bounds */
+@media (max-width: 767.98px) {
+  .min-h-350 {
+    min-height: 280px;
+  }
+  .watermark-num {
+    font-size: 7rem;
+  }
+  .custom-carousel-btn {
+    top: auto;
+    bottom: -60px;
+    transform: none;
+  }
+  .services-carousel-section {
+    padding-bottom: 80px !important;
+  }
+}

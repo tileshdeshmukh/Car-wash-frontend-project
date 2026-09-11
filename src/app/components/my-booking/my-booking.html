@@ -1,0 +1,192 @@
+<div
+    class="booking-tracking-section py-5 bg-dark min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+    <div class="bg-glow-orb"></div>
+
+    <div class="container position-relative z-2 animate-fade-up">
+        <div class="row g-4">
+
+            <!-- Left Column: Live Active Wash Status Monitor Tracking Card -->
+            <div class="col-lg-7">
+                <!-- LOADING SKELETON DISPLAY BLOCK -->
+                @if (isLoading) {
+                <div class="d-flex flex-column align-items-center justify-content-center py-5 my-4">
+                    <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-white-50 tracking-wider small text-uppercase">Retrieving booking logs from server...</p>
+                </div>
+                }
+                @else{
+                    <!-- Outer structural wrapper ensures layouts handle empty backend initialization seamlessly -->
+                    <div *ngIf="activeBooking() as booking"
+                        class="card border-0 shadow-lg bg-black text-white rounded-4 p-4 p-md-5 h-100 monitor-card">
+                        <div class="card-body p-0">
+                            <div class="text-white-50 small d-block"> {{ booking.createdAt | date:'medium' }}</div>
+                            <div
+                                class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-3 mb-4">
+                                <h4 class="fw-black text-warning m-0 text-uppercase tracking-wide">Live Active Order</h4>
+
+                                <!-- Dynamic Badge reflecting current row selected state status -->
+                                <span [ngClass]="{
+                                        'bg-warning text-dark': booking.status !== 'Delivered' && booking.status !== 'Done',
+                                        'bg-success text-white': booking.status === 'Delivered' || booking.status === 'Done'
+                                    }" class="badge fw-bold rounded-pill px-3 py-2 animate-pulse-badge">
+                                    {{ booking.status }}
+                                </span>
+                            </div>
+
+                            <!-- Booking Overview Metadata Details Block -->
+                            <div class="row g-3 mb-5 fs-6 bg-dark p-3 rounded-3 border border-secondary border-opacity-10">
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Booking ID</span>
+                                    <strong class="text-warning">{{ booking.id }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Schedule Appointment</span>
+                                    <strong>{{ booking.date | date:'dd MMM yyyy' }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Vehicle Specifications</span>
+                                    <strong>{{ booking.vehicle }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Registration Number</span>
+                                    <strong class="text-uppercase">{{ booking.registration }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Selected Package</span>
+                                    <strong>{{ booking.service }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-white-50 small d-block">Total Net Cost</span>
+                                    <strong class="text-success fs-5">{{ booking.cost }}</strong>
+                                </div>
+                            </div>
+
+                            <!-- Linear Step-by-Step Status Tracking Timeline Graphic -->
+                            <div *ngIf="booking.currentStep > 0">
+                                <div class="d-flex justify-content-between align-items-center ">
+                                    <h5 class="fw-bold text-white-50 text-uppercase fs-7 tracking-wider">
+                                        Live Wash Progress
+                                    </h5>
+                                    <span class="small text-white-50">
+                                        <div>Last Update</div>    
+                                        <div>{{ booking.updatedAt | date:'medium' }}</div>
+                                    </span>
+                                </div>
+
+                                <div class="progress-timeline d-flex justify-content-between position-relative mb-5">
+                                    <div class="line-progress-bar position-absolute top-50 translate-middle-y">
+                                        <!-- Calculates: Step 1 = 0%, Step 2 = 50%, Step 3 = 100% full -->
+                                        <div class="fill-progress" [style.width.%]="(booking.currentStep - 1) * 50"></div>
+                                    </div>
+
+                                    <!-- Step 1 Point -->
+                                    <div class="step-point text-center position-relative z-2"
+                                        [ngClass]="{'active': booking.currentStep >= 1}">
+                                        <div
+                                            class="circle-icon mx-auto rounded-circle d-flex align-items-center justify-content-center fw-bold">
+                                            1</div>
+                                        <span class="small fw-semibold mt-2 d-block step-text">Confirmed</span>
+                                    </div>
+                                    <!-- Step 2 Point -->
+                                    <div class="step-point text-center position-relative z-2"
+                                        [ngClass]="{'active': booking.currentStep >= 2}">
+                                        <div
+                                            class="circle-icon mx-auto rounded-circle d-flex align-items-center justify-content-center fw-bold">
+                                            2</div>
+                                        <span class="small fw-semibold mt-2 d-block step-text">Washing</span>
+                                    </div>
+                                    <!-- Step 3 Point -->
+                                    <div class="step-point text-center position-relative z-2"
+                                        [ngClass]="{'active': booking.currentStep >= 3}">
+                                        <div
+                                            class="circle-icon mx-auto rounded-circle d-flex align-items-center justify-content-center fw-bold">
+                                            3</div>
+                                        <span class="small fw-semibold mt-2 d-block step-text">Ready</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fallback block for completed/delivered items that do not require active progress mapping tracking bars -->
+                            <div *ngIf="booking.currentStep === 0">
+                                <span class="small text-white-50">
+                                        <div>Delivered on </div>    
+                                        <div>{{ booking.updatedAt | date:'medium' }}</div>
+                                    </span>
+                                <div
+                                    class="alert alert-secondary bg-success border-secondary border-opacity-25 text-white mb-5 text-center">
+                                    🎉 This order has been completed and processed successfully.
+                                </div>
+                            </div>
+
+                            <!-- Cancellation Safety Trigger Button -->
+                            <div class="text-end mt-4">
+                                <button (click)="cancelBooking(booking.id)"
+                                    [disabled]="booking.currentStep > 1 || booking.currentStep === 0"
+                                    class="btn btn-sm btn-outline-danger rounded-pill px-4 py-2 fw-semibold btn-cancel-animate">
+                                    Cancel Wash Appointment
+                                </button>
+                                <small *ngIf="booking.currentStep > 1" class="text-white-50 d-block mt-2 fs-7 italic">
+                                    *Order cannot be cancelled once washing begins.
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                <!-- Fallback layout display block in case there are no items returned from server via backend API -->
+                <div *ngIf="!activeBooking()"
+                    class="card border-0 shadow-lg bg-black text-white rounded-4 p-5 h-100 d-flex align-items-center justify-content-center text-center">
+                    <p class="text-white-50 m-0">No booking details available. Book an appointment to track status live.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column: Historical Summary Archive Card Log -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-lg bg-black text-white rounded-4 p-4 p-md-5 h-100 monitor-card">
+                    <div class="card-body p-0">
+                        <h4
+                            class="fw-black text-warning border-bottom border-secondary border-opacity-25 pb-3 mb-4 text-uppercase tracking-wide">
+                            Wash History
+                        </h4>
+
+                        <!-- Loop Row Blocks -->
+                        <div class="d-flex flex-column gap-3" style="max-height: 550px; overflow-y: auto;">
+                            <!-- Appended Click Listener integration to pipe properties into active view state configuration parameters -->
+                            <div *ngFor="let item of pastBookings()" (click)="selectBookingForDetails(item)"
+                                [class.border-warning]="activeBooking()?.id === item.id"
+                                class="history-item-row p-3 rounded-3 bg-dark border d-flex justify-content-between align-items-center transition-hover"
+                                style="cursor: pointer; transition: all 0.2s ease-in-out;">
+                                <div>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="fw-bold text-white fs-6">{{ item.id }}</span>
+                                        <span [ngClass]="{
+                                                'bg-success text-success': item.status === 'Delivered' || item.status === 'Done',
+                                                'bg-warning text-warning': item.status !== 'Delivered' && item.status !== 'Done'
+                                              }"
+                                            class="badge bg-opacity-10 border border-opacity-25 extra-small rounded-pill px-2 py-0.5">
+                                            {{ item.status }}
+                                        </span>
+                                        
+                                    </div>
+                                    <small class="text-white-50 d-block mb-1">{{ item.vehicle }}</small>    
+                                    <small class="text-white-50 d-block mb-1">{{ item.service }} • {{ item.date
+                                        }}</small>
+                                    <!-- <span class="extra-small text-muted fw-mono">{{ item.id }}</span> -->
+                                </div>
+                                <div class="text-end">
+                                    <span class="fw-black text-warning fs-5">{{ item.cost }}</span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

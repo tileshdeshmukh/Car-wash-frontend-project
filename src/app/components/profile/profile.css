@@ -1,0 +1,92 @@
+.fw-black { font-weight: 900; }
+.extra-small { font-size: 0.65rem; }
+.z-2 { z-index: 2; }
+
+/* Dashboard Content Section Setup */
+.profile-section {
+  background-color: #0b0b0d !important;
+}
+
+/* Background Atmospheric Light Orb Effect */
+.bg-glow-orb {
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphism Matte Black Grid Frames styling */
+.dashboard-card {
+  background: rgba(30, 30, 35, 0.65) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Avatar Border Dimension Scaling bounds */
+.avatar-container {
+  width: 120px;
+  height: 120px;
+  background-color: #1e1e24;
+}
+
+/* Table Design Layout Modifications */
+.custom-profile-table {
+  --bs-table-bg: transparent !important;
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.02) !important;
+}
+.custom-profile-table th, .custom-profile-table td {
+  padding: 16px 12px;
+}
+
+/* Form Input Element Overrides */
+.custom-input {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+.custom-input:focus {
+  border-color: #ffc107 !important;
+  box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.15) !important;
+}
+
+/* Button Animations interactive rules link hooks */
+.btn-animate {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-animate:hover {
+  background-color: #ffc107 !important;
+  color: #0b0b0d !important;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+}
+
+.btn-save-scale {
+  transition: transform 0.2s ease;
+}
+.btn-save-scale:hover {
+  transform: translateY(-2px);
+}
+
+/* Keyframe Animations Layout Entry Hooks */
+.animate-fade-up {
+  animation: fadeUpFrame 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+  animation: slideInFrame 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpFrame {
+  0% { opacity: 0; transform: translateY(25px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFrame {
+  0% { opacity: 0; transform: translateX(15px); }
+  100% { opacity: 1; transform: translateX(0); }
+}

@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg bg-warning navbar-light shadow-sm sticky-top px-3 py-2 custom-navbar">
+  <div class="container-fluid">
+    
+    <!-- Brand Logo with Hover Zoom -->
+    <a class="navbar-brand fw-black border border-dark p-2  bg-white rounded shadow-sm logo-animate" routerLink="/">
+      C<span class="text-warning" style="-webkit-text-stroke: 1px black; text-stroke: 1px black;">W</span>
+    </a>
+    
+    <!-- Mobile Hamburger Toggle Menu -->
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Collapsible Wrapper -->
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      
+      <!-- Primary Navigation Links -->
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll align-items-center" style="--bs-scroll-height: 250px;">
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-dark px-3 position-relative animate-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-dark px-3 position-relative animate-link" routerLink="/about" routerLinkActive="active">About</a>
+        </li>
+       
+        <!-- Animated Services Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-bold text-dark px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Services
+          </a>
+          <ul class="dropdown-menu border-0 shadow dropdown-fade">
+            <li><a class="dropdown-item py-2 fw-semibold" href="#">Water Wash</a></li>
+            <li><a class="dropdown-item py-2 fw-semibold" href="#">Foam Wash</a></li> <!-- Fixed Typo from Furm to Foam -->
+            <li><a class="dropdown-item py-2 fw-semibold" href="#">Full Wash</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-bold text-dark px-3 position-relative animate-link" routerLink="/mybooking" routerLinkActive="active">MyBooking</a>
+        </li> 
+      </ul>
+      
+      <!-- Dynamic Layout Actions (Search + Avatar) -->
+      <div class="d-flex align-items-center flex-column flex-lg-row gap-3 mt-3 mt-lg-0 w-100 w-lg-auto justify-content-end">
+        <!-- Search Field Group -->
+        <form class="d-flex role-search position-relative search-expand" role="search">
+          <input class="form-control rounded-pill bg-white border-dark text-dark px-3 py-1.5 shadow-sm" type="search" placeholder="Search services..." aria-label="Search"/>
+          <button class="btn btn-dark rounded-circle p-2 position-absolute end-0 top-50 translate-middle-y me-1 d-flex align-items-center justify-content-center btn-search-icon" type="submit">
+            <svg xmlns="http://w3.org" width="14" height="14" fill="currentColor" class="bi bi-search text-warning" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+          </button>
+        </form>
+        
+        <!-- User Avatar with Ripple Float Effect -->
+        <div class="avatar-wrapper ms-lg-2">
+          <a routerLink="/profile" class="d-block">
+            <img src="img/man-avatar-icon.png" class="img-fluid rounded-circle border border-2 border-dark shadow-sm hover-pop-avatar" alt="User Profile" onerror="this.src='https://flaticon.com'">
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nav>

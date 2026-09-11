@@ -1,0 +1,143 @@
+<div class="booking-section py-5 bg-dark min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+  <div class="bg-glow"></div>
+
+  <div class="container position-relative z-1 animate-fade-up">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <div class="card border-0 shadow-lg bg-black text-white rounded-4 p-4 p-md-5 form-card">
+
+          <div class="text-center mb-5">
+            <h2 class="fw-black text-uppercase tracking-wider m-0">Book Your <span class="text-warning">Wash</span></h2>
+            <p class="text-white-50 small mt-2">Specify your precise brand model details for a targeted cleaning plan</p>
+          </div>
+
+          <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row g-4">
+
+              <!-- Customer Name -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Customer Name</label>
+                <input type="text" formControlName="customerName" class="form-control custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['customerName'].errors }" placeholder="John Doe">
+                <div *ngIf="isSubmitted && f['customerName'].errors" class="invalid-feedback">
+                  <span *ngIf="f['customerName'].errors['required']">Name is required.</span>
+                  <span *ngIf="f['customerName'].errors['minlength']">Must be at least 3 characters.</span>
+                </div>
+              </div>
+
+              <!-- Mobile Number -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Mobile Number</label>
+                <input type="tel" formControlName="mobileNumber" class="form-control custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['mobileNumber'].errors }" placeholder="10-digit number">
+                <div *ngIf="isSubmitted && f['mobileNumber'].errors" class="invalid-feedback">
+                  <span *ngIf="f['mobileNumber'].errors['required']">Mobile number is required.</span>
+                  <span *ngIf="f['mobileNumber'].errors['pattern']">Please enter a valid 10-digit mobile number.</span>
+                </div>
+              </div>
+
+              <!-- Appointment Date -->
+              <div class="col-12">
+                <label class="form-label small fw-bold text-uppercase text-warning">Select Appointment Date</label>
+                <div class="position-relative date-input-wrapper">
+                  <input type="date" formControlName="bookingDate" class="form-control custom-input" [min]="minDate"
+                    [ngClass]="{ 'is-invalid': isSubmitted && f['bookingDate'].errors }">
+                  <div *ngIf="isSubmitted && f['bookingDate'].errors" class="invalid-feedback">
+                    Please select a valid date for your car wash appointment.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vehicle Type Toggle Radio Buttons -->
+              <div class="col-12">
+                <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Type</label>
+                <div class="d-flex gap-3 mt-1">
+                  <div class="form-check custom-radio flex-fill p-0">
+                    <input class="form-check-input d-none" type="radio" id="typeBike" value="Bike" formControlName="vehicleType">
+                    <label class="btn btn-outline-warning w-100 py-2.5 fw-bold" for="typeBike">🏍️ Bike</label>
+                  </div>
+                  <div class="form-check custom-radio flex-fill p-0">
+                    <input class="form-check-input d-none" type="radio" id="typeCar" value="Car" formControlName="vehicleType">
+                    <label class="btn btn-outline-warning w-100 py-2.5 fw-bold" for="typeCar">🚗 Car</label>
+                  </div>
+                </div>
+                <div *ngIf="isSubmitted && f['vehicleType'].errors" class="text-danger small mt-2 d-block">
+                  Please select your target vehicle type.
+                </div>
+              </div>
+
+              <!-- Vehicle Brand Selection -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Brand</label>
+                <select formControlName="vehicleBrand" class="form-select custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleBrand'].errors }">
+                  <option value="" disabled selected>Choose Brand</option>
+                  <option class="text-white bg-dark" *ngFor="let brand of availableBrands" [value]="brand">{{ brand }}</option>
+                  <option class="text-white bg-dark" value="Other">Other</option>
+                </select>
+                <div *ngIf="isSubmitted && f['vehicleBrand'].errors" class="invalid-feedback">
+                  Brand selection is required.
+                </div>
+              </div>
+
+              <!-- Vehicle Model Selection -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Model</label>
+                <select formControlName="vehicleModel" class="form-select custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleModel'].errors }">
+                  <option value="" disabled selected>Choose Model</option>
+                  <option class="text-white bg-dark" *ngFor="let model of availableModels" [value]="model">{{ model }}</option>
+                  <option class="text-white bg-dark" value="Other">Other</option>
+                </select>
+                <div *ngIf="isSubmitted && f['vehicleModel'].errors" class="invalid-feedback">
+                  Model specification is required.
+                </div>
+              </div>
+
+              <!-- Vehicle Color Input -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Colour</label>
+                <input type="text" formControlName="vehicleColor" class="form-control custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleColor'].errors }" placeholder="e.g. Black, White">
+                <div *ngIf="isSubmitted && f['vehicleColor'].errors" class="invalid-feedback">
+                  Color entry field is required.
+                </div>
+              </div>
+
+              <!-- Vehicle Registration Number Input -->
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Registration Number</label>
+                <input type="text" formControlName="vehicleNumber" class="form-control custom-input"
+                  [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleNumber'].errors }" placeholder="e.g. MH12AB1234">
+                <div *ngIf="isSubmitted && f['vehicleNumber'].errors" class="invalid-feedback">
+                  <span *ngIf="f['vehicleNumber'].errors['required']">Registration number field is required.</span>
+                  <span *ngIf="f['vehicleNumber'].errors['pattern']">Must follow structural profile schema (e.g. MH12AB1234).</span>
+                </div>
+              </div>
+
+              <!-- Washing Plan Dropdown Input Block Selection -->
+              <div class="col-12">
+                <label class="form-label small fw-bold text-uppercase text-warning">Washing Plan/Package (Optional)</label>
+                <select formControlName="planPackage" class="form-select custom-input">
+                  @for (item of packageList; track item.id){
+                    <option class="text-white bg-dark" value="{{ item.name }}">{{ item.name }} Package  - ₹{{ item.cost }}</option>
+                  }
+                </select>
+              </div>
+
+              <!-- Confirmation Trigger Button Action -->
+              <div class="col-12 mt-5">
+                <button type="submit" class="btn btn-warning w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
+                  Confirm Booking Appointment
+                </button>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

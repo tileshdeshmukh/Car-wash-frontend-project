@@ -1,0 +1,108 @@
+.fw-black { font-weight: 900; }
+
+/* Custom Base Sticky Navbar Rules */
+.custom-navbar {
+  transition: all 0.3s ease-in-out;
+  background-color: #ffc107 !important; /* Premium Matte Warning Yellow */
+}
+
+/* 1. Logo Hover Bounce Effect */
+.logo-animate {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.logo-animate:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+/* 2. Slide Underline Links Animation */
+.animate-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 50%;
+  background-color: #212529; /* Dark marker line */
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(-50%);
+}
+
+.animate-link:hover::after,
+.animate-link.active::after {
+  width: 70%;
+}
+
+.animate-link:hover {
+  color: #000000 !important;
+}
+
+/* 3. Smooth Dropdown Fade-In Effect */
+@media (min-width: 992px) {
+  .dropdown:hover .dropdown-fade {
+    display: block;
+    animation: dropdownSlideFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes dropdownSlideFade {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-menu {
+  background-color: #ffffff;
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #ffc107 !important; /* Warning accent highlights */
+  color: #212529 !important;
+  padding-left: 20px; /* Quick nudge animation */
+}
+
+/* 4. Search Bar Interactive focus expanding setup */
+.search-expand input {
+  width: 180px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+
+.search-expand input:focus {
+  width: 240px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
+  border-color: #212529 !important;
+}
+
+.btn-search-icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* 5. Profile Picture Elevation Bounce */
+.hover-pop-avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+}
+
+.hover-pop-avatar:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+}
+
+/* Responsive adjustment padding hooks */
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    text-align: center;
+    padding: 15px 0;
+  }
+  .animate-link::after {
+    display: none; /* Hide slide bars on small screens */
+  }
+  .search-expand input, .search-expand input:focus {
+    width: 100%;
+  }
+}

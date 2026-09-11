@@ -1,0 +1,58 @@
+/* Premium Background Ambient Orbs CSS Custom Configuration Layout */
+.auth-wrapper {
+  background-color: #0b0c10 !important;
+}
+.blur-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  filter: blur(140px);
+  z-index: 1;
+  pointer-events: none;
+}
+.pink-glow { width: 450px; height: 450px; top: -10%; left: -10%; background: #ff007f; }
+.yellow-glow { width: 500px; height: 500px; bottom: -15%; right: -5%; background: #ffc107; }
+
+/* Sliding Selection Tab Header Layouts Core Properties */
+.auth-tabs {
+  position: relative;
+  height: 48px;
+}
+.sliding-bg {
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background-color: #ffc107;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sliding-bg.slide-right {
+  transform: translateX(100%);
+}
+.tab-btn {
+  border: none !important;
+  background: transparent !important;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+/* Form Input Element Accent States and Animations */
+.focus-glow:focus {
+  background-color: #12131c !important;
+  border-color: rgba(255, 193, 7, 0.4) !important;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.15) !important;
+}
+.transition-scale {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.transition-scale:active {
+  transform: scale(0.97);
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: tabFadeIn 0.4s ease-out forwards;
+}
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

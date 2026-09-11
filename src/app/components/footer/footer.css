@@ -1,0 +1,38 @@
+/* Layout Alignment & Accents */
+.fw-black { font-weight: 900; }
+.max-w-600 { max-width: 600px; }
+
+/* Sets background layout to rich deep matte black */
+.footer-section {
+  background-color: #0b0b0d !important;
+}
+
+/* Tracking Line Accent Utilities */
+.tracking-wide { letter-spacing: 1px; }
+.tracking-widest { letter-spacing: 2px; }
+
+/* Custom Circular Frame Around Icons */
+.icon-circle {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 193, 7, 0.03);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.icon-circle:hover {
+  background-color: rgba(255, 193, 7, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Nav Menu Text Link Styling Rules */
+.footer-nav-links a {
+  color: #a0a0a5;
+}
+
+.footer-nav-links a:hover {
+  color: #ffc107 !important; /* Changes to warning color on hover */
+}
+
+.transition-color {
+  transition: color 0.2s ease-in-out;
+}

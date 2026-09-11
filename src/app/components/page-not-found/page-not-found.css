@@ -1,0 +1,47 @@
+/* Typography Weight Helpers */
+.fw-extrabold { font-weight: 800; }
+.fw-black { font-weight: 900; }
+.max-w-500 { max-width: 500px; }
+
+/* Large Display Code Text tracking styles */
+.display-1 {
+  font-size: calc(6rem + 6vw);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+/* 1. Floating Animation Effect */
+.floating-animation {
+  animation: floatLoop 3s ease-in-out infinite;
+}
+
+@keyframes floatLoop {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 2. Pulsing Glow effect on the Zero */
+.glowing-eye {
+  display: inline-block;
+  text-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+  animation: pulseGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.05); filter: brightness(1.2); }
+}
+
+/* 3. Button Interactive Hover Changes */
+.hover-scale-warning {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-scale-warning:hover {
+  transform: scale(1.05);
+  background-color: #ffc107 !important; /* Changes to warning yellow */
+  border-color: #ffc107 !important;
+  color: #212529 !important; /* Dark text */
+  box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3) !important;
+}

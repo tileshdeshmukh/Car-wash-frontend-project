@@ -1,0 +1,80 @@
+/* Custom Sizing & Grid Weights */
+.fw-black { font-weight: 900; }
+.max-w-500 { max-width: 500px; }
+.z-2 { z-index: 2; }
+
+/* Sets background layout to rich deep matte black */
+.hero-section {
+  background: #0b0b0d !important;
+}
+
+/* Tracking Line Accent Utility */
+.tracking-wider {
+  letter-spacing: 1.5px;
+}
+
+.accent-dash {
+  width: 16px;
+  height: 2px;
+  display: inline-block;
+}
+
+/* Floating Radial Glow Effect Behind Layout elements */
+.hero-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 70%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.05) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Image Scale Controls & Dynamic Shadow Caps */
+.hero-car-img {
+  max-height: 500px;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+}
+
+/* Button Animations */
+.hover-grow {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-grow:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.2) !important;
+}
+
+.hover-dim {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.hover-dim:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 1. Floating Animation Effect */
+.floating-animation {
+  animation: floatLoop 3s ease-in-out infinite;
+}
+
+@keyframes floatLoop {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Responsive Scaling Breakpoint Adjustments */
+@media (max-width: 991.98px) {
+  .hero-section {
+    padding-top: 100px !important;
+  }
+  .max-w-500 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

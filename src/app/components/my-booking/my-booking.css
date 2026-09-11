@@ -1,0 +1,158 @@
+.fw-black { font-weight: 900; }
+.extra-small { font-size: 0.65rem; }
+.z-2 { z-index: 2; }
+
+.booking-tracking-section {
+  background-color: #0b0b0d !important;
+}
+
+.tracking-wide { letter-spacing: 1px; }
+.tracking-wider { letter-spacing: 1.5px; }
+
+/* Background Orb Ambient Highlight Glow */
+.bg-glow-orb {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glassmorphism Card Frame Layout */
+.monitor-card {
+  background: rgba(30, 30, 35, 0.65) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+
+/* Starting ---------------------------------------------- */
+
+/* 
+.progress-timeline {
+  padding: 0 20px;
+}
+
+.line-progress-bar {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.fill-progress {
+  height: 100%;
+  background-color: #ffc107;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.step-point .circle-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #212529;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: #a0a0a5;
+  font-size: 0.9rem;
+  transition: all 0.4s ease;
+} */
+
+/* end ------------------------------------------------- */
+/* 1. Base Container Timeline Padding Reset */
+.progress-timeline {
+  padding: 0;
+  padding-top: 20px;;
+  margin: 10px 0;
+}
+
+/* 2. Centered Progress Tracking Line Architecture */
+.line-progress-bar {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  
+  /*  Centered Offsets: Start from middle of Circle 1 and end at Circle 3 */
+  left: 25px;   /* Exactly half of your 36px circle width */
+  right: 25px;  /* Exactly half of your 36px circle width */
+  width: auto;  /* Allows left and right bounds to set the width dynamically */
+}
+
+/* 3. Smooth Progress Fill */
+.fill-progress {
+  height: 100%;
+  background-color: #ffc107;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 4. Timeline Point Circle Stack Overrides */
+.step-point .circle-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #212529;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: #a0a0a5;
+  font-size: 0.9rem;
+  transition: all 0.4s ease;
+  
+  /* Centers the circle icon box element cleanly */
+  position: relative;
+  margin: 0 auto; 
+}
+
+.step-point .step-text {
+  color: #a0a0a5;
+  transition: color 0.4s ease;
+  font-size: 0.825rem;
+}
+
+/* Active Highlight States mapping classes */
+.step-point.active .circle-icon {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #0b0b0d;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+}
+
+.step-point.active .step-text {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+/* 2. Micro Animations (Pulse & Hover Rows) */
+.animate-pulse-badge {
+  animation: pulseFrame 1.8s infinite alternate;
+}
+
+@keyframes pulseFrame {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+  100% { transform: scale(1.03); box-shadow: 0 0 8px 4px rgba(255, 193, 7, 0.1); }
+}
+
+.transition-hover {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.transition-hover:hover {
+  transform: translateX(4px);
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.btn-cancel-animate {
+  transition: all 0.2s ease;
+}
+.btn-cancel-animate:hover:not([disabled]) {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+/* Keyframe Entrance Fade-up Animation Hooks */
+.animate-fade-up {
+  animation: fadeUpFrame 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpFrame {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

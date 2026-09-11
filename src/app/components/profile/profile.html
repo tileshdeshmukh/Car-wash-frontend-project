@@ -1,0 +1,156 @@
+<div class="profile-section py-5 bg-dark min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+  <div class="bg-glow-orb"></div>
+
+  <div class="container position-relative z-2 animate-fade-up">
+    <div class="row g-4">
+
+      <!-- Left Column: User Summary Card -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-lg bg-black text-white rounded-4 text-center p-4 h-100 dashboard-card">
+          <div class="card-body p-0 position-relative">
+
+            <!-- Floating Membership Badge Ribbon -->
+            <span
+              class="badge bg-warning text-dark fw-bold rounded-pill px-3 py-2 position-absolute top-0 end-0 shadow-sm">
+              {{ userProfile.membership }}
+            </span>
+
+            <!-- Profile Avatar Frame with Ripple Effect -->
+            <div
+              class="avatar-container mx-auto my-4 rounded-circle border border-3 border-warning overflow-hidden shadow">
+              <img [src]="userProfile.avatar" alt="Avatar Graphic" class="img-fluid"
+                onerror="this.src='https://flaticon.com'">
+            </div>
+
+            <h3 class="fw-black m-0 tracking-wide">{{ userProfile.name }}</h3>
+            <p class="text-white-50 small mb-4">{{ userProfile.email }}</p>
+
+            <!-- Loyalty Stats Counters Rows -->
+            <div class="row g-2 bg-dark rounded-3 p-3 my-4 border border-secondary border-opacity-10">
+              <div class="col-6 border-end border-secondary border-opacity-25">
+                <h4 class="fw-black text-warning m-0">{{ userProfile.totalWashes }}</h4>
+                <small class="text-white-50 text-uppercase tracking-wider extra-small">Total Washes</small>
+                <p class="text-white text-uppercase tracking-wider extra-small">🚗 {{ userProfile.totalCar}} | 🏍️ {{userProfile.totalBike}}</p>
+                
+              </div>
+              <div class="col-6">
+                <h4 class="fw-black text-warning m-0">2</h4>
+                <small class="text-white-50 text-uppercase tracking-wider extra-small">Active Car Guards</small>
+              </div>
+            </div>
+
+            <!-- Profile Management Action Toggle Trigger -->
+            <button (click)="toggleEditMode()"
+              class="btn btn-outline-warning w-100 rounded-pill py-2 fw-bold btn-animate mt-2">
+              {{ isEditMode ? 'Close Editor' : '✏️ Edit Profile Info' }}
+            </button>
+            <button (click)="logout()"
+              class="btn btn-outline-danger w-100 rounded-pill py-2 fw-bold btn-animate mt-2">
+              LogOut
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Detail Panel (View / Edit) -->
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-lg bg-black text-white rounded-4 p-4 p-md-5 h-100 dashboard-card">
+          <div class="card-body p-0">
+
+            <!-- Paradigm A: Edit Form View Mode panel -->
+            <div *ngIf="isEditMode" class="animate-slide-in">
+              <h4 class="fw-bold text-warning border-bottom border-secondary border-opacity-25 pb-3 mb-4">Update Profile
+                Account</h4>
+              <form (ngSubmit)="saveProfileChanges()">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50 small fw-bold text-uppercase">Full Name</label>
+                    <input type="text" [(ngModel)]="tempProfile.name" name="name" class="form-control custom-input"
+                      required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label text-white-50 small fw-bold text-uppercase">Mobile Number</label>
+                    <input type="tel" [(ngModel)]="tempProfile.mobile" name="mobile" class="form-control custom-input"
+                      required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label text-white-50 small fw-bold text-uppercase">Email Address</label>
+                    <input type="email" [(ngModel)]="tempProfile.email" name="email" class="form-control custom-input"
+                      required>
+                  </div>
+                  <div class="col-12 mt-5 d-flex gap-3">
+                    <button type="submit"
+                      class="btn btn-warning rounded-pill px-4 py-2.5 fw-bold text-dark flex-fill btn-save-scale">Save
+                      Changes</button>
+                    <button type="button" (click)="toggleEditMode()"
+                      class="btn btn-outline-secondary rounded-pill px-4 py-2.5 fw-bold text-white flex-fill">Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Paradigm B: Classic Logs History List Dashboard Mode -->
+            <div *ngIf="!isEditMode" class="animate-slide-in">
+              <h4 class="fw-bold text-warning border-bottom border-secondary border-opacity-25 pb-3 mb-4">Past Booking
+                Records</h4>
+
+              <!-- LOADING SKELETON DISPLAY BLOCK -->
+              @if (isLoading) {
+              <div class="d-flex flex-column align-items-center justify-content-center py-5 my-4">
+                <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-white-50 tracking-wider small text-uppercase">Retrieving booking logs from server...</p>
+              </div>
+              } @else{
+                <!-- Responsive Timeline Stack Rows -->
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover align-middle border-0 m-0 custom-profile-table">
+                    <thead>
+                      <tr class="text-white-50 border-bottom border-secondary border-opacity-25 fs-7 text-uppercase">
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Vehicle</th>
+                        <th>Service Details</th>
+                        <th>Cost</th>
+                        <th class="text-end">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      @for (book of pastBookingsList; track book.id)
+                      {
+                      <tr class="border-bottom border-secondary border-opacity-10 fs-6">
+                        <td class="fw-bold text-warning">#CW-{{ book.id }}</td>
+                        <td class="text-white-50">{{ book.date }}</td>
+                        <td>{{ book.vehicleBrand }} {{book.vehicleModel}}</td>
+                        <td>{{ book.plan }}</td>
+                        <td class="fw-bold">₹{{ book.price }}/-</td>
+                        <td class="text-end">
+                          @if (book.washStatus === "Delivered" || book.washStatus === "Done") {
+                          <span
+                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1.5 small">
+                            Completed
+                          </span>
+                          }@else{
+                          <span
+                            class="bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-1.5 small">
+                            {{ book.washStatus }}
+                          </span>
+                          }
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

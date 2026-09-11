@@ -1,0 +1,81 @@
+/* Layout Tweaks */
+.tracking-wider {
+  letter-spacing: 1.5px;
+}
+
+.fw-extrabold {
+  font-weight: 800;
+}
+
+/* Image Scale Caps */
+.max-h-450 {
+  max-height: 450px;
+  width: auto;
+}
+
+/* Custom Branding Overrides for AutoGlow Red (#E61C24) */
+.text-danger {
+  color: #e61c24 !important;
+}
+
+.btn-danger {
+  background-color: #e61c24 !important;
+  border-color: #e61c24 !important;
+}
+
+.btn-danger:hover {
+  background-color: #c4131a !important;
+  border-color: #c4131a !important;
+}
+
+/* Subtle Interactive Transitions */
+.hover-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(230, 28, 36, 0.2) !important;
+}
+
+
+
+/* Card Container Base styling */
+.custom-feature-card {
+  border-radius: 16px !important;
+  background-color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Interactive Elevation Hover */
+.custom-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Circle Wrapper around the core icon links */
+.icon-box {
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Warning Thick Line Accent */
+.accent-line {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* Optional Watermark Design Polish (Adds a large subtle icon shape in card background) */
+.custom-feature-card::after {
+  content: "✨";
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 4rem;
+  opacity: 0.03;
+  pointer-events: none;
+}

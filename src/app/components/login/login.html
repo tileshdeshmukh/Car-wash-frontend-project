@@ -1,0 +1,70 @@
+<div class="auth-wrapper min-vh-100 d-flex align-items-center justify-content-center bg-dark position-relative overflow-hidden">
+  <div class="blur-glow-orb pink-glow"></div>
+  <div class="blur-glow-orb yellow-glow"></div>
+
+  <div class="container position-relative z-3">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        
+        <!-- Premium Dynamic Auth Card Structure -->
+        <div class="auth-card p-4 p-md-5 rounded-4 border border-secondary border-opacity-10 shadow-2xl bg-black">
+          
+          <!-- Animated Top Selection Sliding Tabs Toggle Custom Switcher Wrapper -->
+          <div class="auth-tabs d-flex position-relative mb-4 p-1 rounded-pill bg-dark border border-secondary border-opacity-10">
+            <div class="sliding-bg position-absolute top-1 bottom-1 transition-all rounded-pill" [class.slide-right]="!isLoginTab()"></div>
+            <button class="btn tab-btn w-50 z-2 rounded-pill fw-bold" [class.text-dark]="isLoginTab()" [class.text-white]="!isLoginTab()" (click)="switchTab(true)">Sign In</button>
+            <button class="btn tab-btn w-50 z-2 rounded-pill fw-bold" [class.text-dark]="!isLoginTab()" [class.text-white]="isLoginTab()" (click)="switchTab(false)">Sign Up</button>
+          </div>
+
+          <!-- Alert Display Engine Box -->
+          <div *ngIf="errorMessage()" class="alert-box d-flex align-items-center justify-content-center gap-2 mb-4 p-2 rounded-3 text-danger border border-danger border-opacity-25 bg-danger bg-opacity-10 text-center small fw-medium">
+            ⚠️ {{ errorMessage() }}
+          </div>
+
+          <!-- SIGN IN CONTENT WINDOW INTERSECTION VIEW -->
+          @if (isLoginTab()) {
+            <form (ngSubmit)="onLogin()" class="animate-fade-in">
+              <div class="input-group-custom mb-3">
+                <label class="text-white-50 small mb-1 d-block">Email Address</label>
+                <input type="email" [(ngModel)]="loginData.email" name="email" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="name@example.com" required [disabled]="isLoading()">
+              </div>
+              <div class="input-group-custom mb-4">
+                <label class="text-white-50 small mb-1 d-block">Password</label>
+                <input type="password" [(ngModel)]="loginData.password" name="password" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="••••••••" required [disabled]="isLoading()">
+              </div>
+              <button type="submit" class="btn btn-warning w-100 fw-black text-uppercase py-2.5 rounded-pill shadow-warning transition-scale d-flex align-items-center justify-content-center" [disabled]="isLoading()">
+                @if (isLoading()) { <span class="spinner-border spinner-border-sm me-2"></span> Checking... } @else { Access Dashboard }
+              </button>
+            </form>
+          } 
+          
+          <!-- SIGN UP CONTENT WINDOW INTERSECTION VIEW -->
+          @else {
+            <form (ngSubmit)="onRegister()" class="animate-fade-in">
+              <div class="input-group-custom mb-3">
+                <label class="text-white-50 small mb-1 d-block">Full Name</label>
+                <input type="text" [(ngModel)]="registerData.name" name="name" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="Tilesh Deshmukh" required [disabled]="isLoading()">
+              </div>
+              <div class="input-group-custom mb-3">
+                <label class="text-white-50 small mb-1 d-block">Email Address</label>
+                <input type="email" [(ngModel)]="registerData.email" name="email" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="tilesh@example.com" required [disabled]="isLoading()">
+              </div>
+              <div class="input-group-custom mb-3">
+                <label class="text-white-50 small mb-1 d-block">Mobile Number</label>
+                <input type="tel" [(ngModel)]="registerData.mobile" name="mobile" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="9876543210" required [disabled]="isLoading()">
+              </div>
+              <div class="input-group-custom mb-4">
+                <label class="text-white-50 small mb-1 d-block">Password</label>
+                <input type="password" [(ngModel)]="registerData.password" name="password" class="form-control text-white bg-dark border-secondary border-opacity-25 rounded-3 py-2 px-3 focus-glow" placeholder="Create Secure Password" required [disabled]="isLoading()">
+              </div>
+              <button type="submit" class="btn btn-warning w-100 fw-black text-uppercase py-2.5 rounded-pill shadow-warning transition-scale d-flex align-items-center justify-content-center" [disabled]="isLoading()">
+                @if (isLoading()) { <span class="spinner-border spinner-border-sm me-2"></span> Building... } @else { Create Account }
+              </button>
+            </form>
+          }
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

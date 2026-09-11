@@ -1,0 +1,73 @@
+/* Typography & Utilities */
+.fw-extrabold { font-weight: 800; }
+.fw-black { font-weight: 900; }
+.max-w-600 { max-width: 600px; }
+.z-1 { z-index: 1; }
+
+.tracking-wider {
+  letter-spacing: 1px;
+}
+
+/* Card Transitions */
+.pricing-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* List Item Custom Icons (Checks & Crosses) */
+.pricing-list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 0.875rem;
+}
+
+.pricing-list li::before {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-weight: 700;
+}
+
+/* Light Card Check/Cross Config */
+.pricing-list .checked::before {
+  content: "✓";
+  color: #ffc107; /* Bootstrap Warning Color */
+}
+.pricing-list .unchecked::before {
+  content: "✕";
+  color: #dee2e6;
+}
+
+/* Dark Card Check Config */
+.dark-list .checked::before {
+  content: "✓";
+  color: #ffc107;
+}
+
+/* Featured Card Custom Dark Background Texture Mock */
+.featured-card {
+  background: linear-gradient(135deg, #1e1e24 0%, #0b0b0d 100%) !important;
+}
+
+.card-bg-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(255, 193, 7, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Button Interactive Hover Overrides */
+.btn-hover-warning:hover {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #212529 !important;
+}
+
+.btn-hover-dark:hover {
+  background-color: #212529 !important;
+  border-color: #212529 !important;
+  color: #ffffff !important;
+}
