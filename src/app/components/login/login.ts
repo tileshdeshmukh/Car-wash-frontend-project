@@ -39,8 +39,8 @@ export class Login {
 
     this.http.post<any>('http://localhost:8080/api/auth/login', this.loginData)
       .subscribe({
-        next: (res) => {
-          this.authService.login(res.userId.toString());
+        next: (res: { userId: number; token?: string }) => {
+          this.authService.login(res.userId, res.token);
           this.isLoading.set(false);
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);
@@ -71,4 +71,3 @@ export class Login {
       });
   }
 }
-

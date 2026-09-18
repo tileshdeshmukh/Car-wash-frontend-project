@@ -16,6 +16,10 @@ export class AppointmentService {
     return this.http.get<Appointment[]>(`${this.baseUrl}/getAllAppointment`);
   }
 
+  getAppointmentsByUserId(userId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/getAllAppointmentByUserId/${userId}`);
+  }
+
   // NEW: POST method to add appointment
   createAppointment(appointmentData: Partial<Appointment>): Observable<Appointment> {
     return this.http.post<Appointment>(`${this.baseUrl}/addAppointment`, appointmentData);

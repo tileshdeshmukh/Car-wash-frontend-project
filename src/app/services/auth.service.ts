@@ -28,14 +28,13 @@ export class AuthService {
     return false; // Safe fallback for Node.js server environment
   }
 
-  login(userId: string): void {
+  login(userId: string | number, token?: string): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('userId', userId);
-      // Optional: If your backend returns an explicit token string, save it here too:
-      // localStorage.setItem('token', 'your_jwt_token');
-      
+      localStorage.setItem('userId', String(userId));
+      if (token) {
+        localStorage.setItem('token', token);
+      }
       this.isLoggedIn.set(true);
-      this.router.navigate(['/']); // Redirect to home page on success
     }
   }
 
@@ -44,15 +43,34 @@ export class AuthService {
       localStorage.removeItem('userId');
       localStorage.removeItem('token');
       this.isLoggedIn.set(false);
-      this.router.navigate(['/login']);
     }
+    this.router.navigate(['/home']);
   }
 
   getUserId(): number | null {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('userId');
-      return id ? parseInt(id, 10) : null;
+      const parsedId = id ? Number(id) : NaN;
+      return Number.isSafeInteger(parsedId) && parsedId > 0 ? parsedId : null;
     }
     return null; // Safe fallback for Node.js server environment
+  }
+
+  getLocalProfile<T>(userId: number): T | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+    const value = localStorage.getItem(`profile:${userId}`);
+    if (!value) return null;
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      localStorage.removeItem(`profile:${userId}`);
+      return null;
+    }
+  }
+
+  saveLocalProfile<T>(userId: number, profile: T): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(`profile:${userId}`, JSON.stringify(profile));
+    }
   }
 }

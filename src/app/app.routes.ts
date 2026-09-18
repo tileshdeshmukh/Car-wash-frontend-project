@@ -6,7 +6,7 @@ import { Profile } from './components/profile/profile';
 import { Mybooking } from './components/my-booking/my-booking';
 import { Login } from './components/login/login';
 import { authGuard } from './services/auth.guard'; 
-import { booknow } from './components/booknow/booknow';
+import { Booknow } from './components/booknow/booknow';
 
 export const routes: Routes = [
     // Public Routes (Anyone can visit these)
@@ -14,9 +14,8 @@ export const routes: Routes = [
     { path: 'home', component: Home },
     { path: 'about', component: About },
     { path: 'login', component: Login }, // 3. Register the animated login path
-    //  { path: 'booknow', component: booknow},
     // Protected Routes (Only accessible when logged in)
-   { path: 'booknow', component: booknow, canActivate: [authGuard] },
+   { path: 'booknow', component: Booknow, canActivate: [authGuard] },
     { path: 'profile', component: Profile, canActivate: [authGuard] },
     { path: 'mybooking', component: Mybooking, canActivate: [authGuard] },
 

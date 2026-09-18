@@ -125,6 +125,53 @@
   animation: pulseFrame 1.8s infinite alternate;
 }
 
+/* Clean Custom Slider Control Buttons */
+.custom-carousel-btn {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 15px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-carousel-btn:hover {
+  background-color: var(--bs-warning);
+}
+
+.custom-carousel-btn:hover .carousel-control-prev-icon,
+.custom-carousel-btn:hover .carousel-control-next-icon {
+  filter: invert(1) grayscale(1) brightness(0); /* Swaps arrow to black on hover */
+}
+
+/* Button Interactive States */
+.btn-hover-dark:hover {
+  background-color: #212529 !important;
+  border-color: #f5c730 !important;
+  color: #ffffff !important;
+}
+
+/* Responsive adjustment layer bounds */
+@media (max-width: 767.98px) {
+  .min-h-350 {
+    min-height: 280px;
+  }
+  .watermark-num {
+    font-size: 7rem;
+  }
+  .custom-carousel-btn {
+    top: auto;
+    bottom: -60px;
+    transform: none;
+  }
+  .services-carousel-section {
+    padding-bottom: 80px !important;
+  }
+}
+
+
 @keyframes pulseFrame {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
   100% { transform: scale(1.03); box-shadow: 0 0 8px 4px rgba(255, 193, 7, 0.1); }

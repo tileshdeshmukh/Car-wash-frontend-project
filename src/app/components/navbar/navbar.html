@@ -34,9 +34,21 @@
             <li><a class="dropdown-item py-2 fw-semibold" href="#">Full Wash</a></li>
           </ul>
         </li>
-        <li class="nav-item">
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-bold text-dark px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Booking
+          </a>
+          <ul class="dropdown-menu border-0 shadow dropdown-fade">
+            <li><a class="dropdown-item py-2 fw-semibold" routerLink="/booknow">Book Now</a></li>
+            <li><a class="dropdown-item py-2 fw-semibold" routerLink="/mybooking">View MyBooking</a></li> <!-- Fixed Typo from Furm to Foam -->
+            <!-- <li><a class="dropdown-item py-2 fw-semibold" href="#">Full Wash</a></li> -->
+          </ul>
+        </li>
+
+        <!-- <li class="nav-item">
           <a class="nav-link fw-bold text-dark px-3 position-relative animate-link" routerLink="/mybooking" routerLinkActive="active">MyBooking</a>
-        </li> 
+        </li>  -->
       </ul>
       
       <!-- Dynamic Layout Actions (Search + Avatar) -->

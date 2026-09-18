@@ -34,8 +34,8 @@
                 
               </div>
               <div class="col-6">
-                <h4 class="fw-black text-warning m-0">2</h4>
-                <small class="text-white-50 text-uppercase tracking-wider extra-small">Active Car Guards</small>
+                <h4 class="fw-black text-warning m-0">{{ userProfile.activeBookings }}</h4>
+                <small class="text-white-50 text-uppercase tracking-wider extra-small">Active Bookings</small>
               </div>
             </div>
 
@@ -91,11 +91,12 @@
 
             <!-- Paradigm B: Classic Logs History List Dashboard Mode -->
             <div *ngIf="!isEditMode" class="animate-slide-in">
+              <div *ngIf="errorMessage()" class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
               <h4 class="fw-bold text-warning border-bottom border-secondary border-opacity-25 pb-3 mb-4">Past Booking
                 Records</h4>
 
               <!-- LOADING SKELETON DISPLAY BLOCK -->
-              @if (isLoading) {
+              @if (isLoading()) {
               <div class="d-flex flex-column align-items-center justify-content-center py-5 my-4">
                 <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;">
                   <span class="visually-hidden">Loading...</span>

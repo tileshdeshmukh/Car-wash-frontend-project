@@ -118,18 +118,20 @@
 
               <!-- Washing Plan Dropdown Input Block Selection -->
               <div class="col-12">
-                <label class="form-label small fw-bold text-uppercase text-warning">Washing Plan/Package (Optional)</label>
+                <label class="form-label small fw-bold text-uppercase text-warning">Washing Plan/Package</label>
                 <select formControlName="planPackage" class="form-select custom-input">
+                  <option class="text-white bg-dark" [value]="defaultPlan">{{ defaultPlan }}</option>
                   @for (item of packageList; track item.id){
                     <option class="text-white bg-dark" value="{{ item.name }}">{{ item.name }} Package  - ₹{{ item.cost }}</option>
                   }
                 </select>
+                <div *ngIf="packageError" class="text-warning small mt-2">{{ packageError }}</div>
               </div>
 
               <!-- Confirmation Trigger Button Action -->
               <div class="col-12 mt-5">
-                <button type="submit" class="btn btn-warning w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
-                  Confirm Booking Appointment
+                <button type="submit" [disabled]="isSaving" class="btn btn-warning w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
+                  {{ isSaving ? 'Saving...' : 'Confirm Booking Appointment' }}
                 </button>
               </div>
 

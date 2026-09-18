@@ -2,6 +2,8 @@
 export interface Appointment {
   id: number;
   userid: number;
+  customerName?: string;
+  mobileNumber?: string;
   vehicleType: string;
   vehicleBrand: string;
   vehicleModel: string;
