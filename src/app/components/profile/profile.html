@@ -30,8 +30,9 @@
               <div class="col-6 border-end border-secondary border-opacity-25">
                 <h4 class="fw-black text-warning m-0">{{ userProfile.totalWashes }}</h4>
                 <small class="text-white-50 text-uppercase tracking-wider extra-small">Total Washes</small>
-                <p class="text-white text-uppercase tracking-wider extra-small">🚗 {{ userProfile.totalCar}} | 🏍️ {{userProfile.totalBike}}</p>
-                
+                <p class="text-white text-uppercase tracking-wider extra-small">🚗 {{ userProfile.totalCar}} | 🏍️
+                  {{userProfile.totalBike}}</p>
+
               </div>
               <div class="col-6">
                 <h4 class="fw-black text-warning m-0">{{ userProfile.activeBookings }}</h4>
@@ -44,8 +45,7 @@
               class="btn btn-outline-warning w-100 rounded-pill py-2 fw-bold btn-animate mt-2">
               {{ isEditMode ? 'Close Editor' : '✏️ Edit Profile Info' }}
             </button>
-            <button (click)="logout()"
-              class="btn btn-outline-danger w-100 rounded-pill py-2 fw-bold btn-animate mt-2">
+            <button (click)="logout()" class="btn btn-outline-danger w-100 rounded-pill py-2 fw-bold btn-animate mt-2">
               LogOut
             </button>
           </div>
@@ -104,47 +104,41 @@
                 <p class="text-white-50 tracking-wider small text-uppercase">Retrieving booking logs from server...</p>
               </div>
               } @else{
-                <!-- Responsive Timeline Stack Rows -->
-                <div class="table-responsive">
-                  <table class="table table-dark table-hover align-middle border-0 m-0 custom-profile-table">
-                    <thead>
-                      <tr class="text-white-50 border-bottom border-secondary border-opacity-25 fs-7 text-uppercase">
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Vehicle</th>
-                        <th>Service Details</th>
-                        <th>Cost</th>
-                        <th class="text-end">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+              <!-- Responsive Timeline Stack Rows -->
+              <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle border-0 m-0 custom-profile-table">
+                  <thead>
+                    <tr class="text-white-50 border-bottom border-secondary border-opacity-25 fs-7 text-uppercase">
+                      <th>ID</th>
+                      <th>Date</th>
+                      <th>Vehicle</th>
+                      <th>Service</th>
+                      <th>Cost</th>
+                      <th class="text-end">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                      @for (book of pastBookingsList; track book.id)
-                      {
-                      <tr class="border-bottom border-secondary border-opacity-10 fs-6">
-                        <td class="fw-bold text-warning">#CW-{{ book.id }}</td>
-                        <td class="text-white-50">{{ book.date }}</td>
-                        <td>{{ book.vehicleBrand }} {{book.vehicleModel}}</td>
-                        <td>{{ book.plan }}</td>
-                        <td class="fw-bold">₹{{ book.price }}/-</td>
-                        <td class="text-end">
-                          @if (book.washStatus === "Delivered" || book.washStatus === "Done") {
-                          <span
-                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1.5 small">
-                            Completed
-                          </span>
-                          }@else{
-                          <span
-                            class="bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-1.5 small">
-                            {{ book.washStatus }}
-                          </span>
-                          }
-                        </td>
-                      </tr>
-                      }
-                    </tbody>
-                  </table>
-                </div>
+                    @for (book of pastBookingsList; track book.id)
+                    {
+                    <tr class="border-bottom border-secondary border-opacity-10 fs-6">
+                      <td class="fw-bold text-warning">#CW-{{ book.id }}</td>
+                      <td class="text-white-50">{{ book.date }}</td>
+                      <td>{{ book.vehicleBrand }} {{book.vehicleModel}}</td>
+                      <td>{{ book.plan }}</td>
+                      <td class="fw-bold">₹{{ book.price }}/-</td>
+                      <td class="text-end">
+                        <span [ngClass]="getStatusClass(book.washStatus)"
+                          class="badge  border border-opacity-25 extra-small rounded-pill px-2 py-0.5">
+                          {{ book.washStatus }}
+                        </span>
+                        
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
               }
             </div>
 

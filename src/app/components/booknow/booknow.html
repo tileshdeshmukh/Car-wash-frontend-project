@@ -9,7 +9,8 @@
 
           <div class="text-center mb-5">
             <h2 class="fw-black text-uppercase tracking-wider m-0">Book Your <span class="text-warning">Wash</span></h2>
-            <p class="text-white-50 small mt-2">Specify your precise brand model details for a targeted cleaning plan</p>
+            <p class="text-white-50 small mt-2">Specify your precise brand model details for a targeted cleaning plan
+            </p>
           </div>
 
           <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" novalidate>
@@ -54,11 +55,13 @@
                 <label class="form-label small fw-bold text-uppercase text-warning">Vehicle Type</label>
                 <div class="d-flex gap-3 mt-1">
                   <div class="form-check custom-radio flex-fill p-0">
-                    <input class="form-check-input d-none" type="radio" id="typeBike" value="Bike" formControlName="vehicleType">
+                    <input class="form-check-input d-none" type="radio" id="typeBike" value="Bike"
+                      formControlName="vehicleType">
                     <label class="btn btn-outline-warning w-100 py-2.5 fw-bold" for="typeBike">🏍️ Bike</label>
                   </div>
                   <div class="form-check custom-radio flex-fill p-0">
-                    <input class="form-check-input d-none" type="radio" id="typeCar" value="Car" formControlName="vehicleType">
+                    <input class="form-check-input d-none" type="radio" id="typeCar" value="Car"
+                      formControlName="vehicleType">
                     <label class="btn btn-outline-warning w-100 py-2.5 fw-bold" for="typeCar">🚗 Car</label>
                   </div>
                 </div>
@@ -73,7 +76,8 @@
                 <select formControlName="vehicleBrand" class="form-select custom-input"
                   [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleBrand'].errors }">
                   <option value="" disabled selected>Choose Brand</option>
-                  <option class="text-white bg-dark" *ngFor="let brand of availableBrands" [value]="brand">{{ brand }}</option>
+                  <option class="text-white bg-dark" *ngFor="let brand of availableBrands" [value]="brand">{{ brand }}
+                  </option>
                   <option class="text-white bg-dark" value="Other">Other</option>
                 </select>
                 <div *ngIf="isSubmitted && f['vehicleBrand'].errors" class="invalid-feedback">
@@ -87,7 +91,8 @@
                 <select formControlName="vehicleModel" class="form-select custom-input"
                   [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleModel'].errors }">
                   <option value="" disabled selected>Choose Model</option>
-                  <option class="text-white bg-dark" *ngFor="let model of availableModels" [value]="model">{{ model }}</option>
+                  <option class="text-white bg-dark" *ngFor="let model of availableModels" [value]="model">{{ model }}
+                  </option>
                   <option class="text-white bg-dark" value="Other">Other</option>
                 </select>
                 <div *ngIf="isSubmitted && f['vehicleModel'].errors" class="invalid-feedback">
@@ -112,27 +117,55 @@
                   [ngClass]="{ 'is-invalid': isSubmitted && f['vehicleNumber'].errors }" placeholder="e.g. MH12AB1234">
                 <div *ngIf="isSubmitted && f['vehicleNumber'].errors" class="invalid-feedback">
                   <span *ngIf="f['vehicleNumber'].errors['required']">Registration number field is required.</span>
-                  <span *ngIf="f['vehicleNumber'].errors['pattern']">Must follow structural profile schema (e.g. MH12AB1234).</span>
+                  <span *ngIf="f['vehicleNumber'].errors['pattern']">Must follow structural profile schema (e.g.
+                    MH12AB1234).</span>
                 </div>
               </div>
 
               <!-- Washing Plan Dropdown Input Block Selection -->
-              <div class="col-12">
+              <div class="col-md-6">
                 <label class="form-label small fw-bold text-uppercase text-warning">Washing Plan/Package</label>
-                <select formControlName="planPackage" class="form-select custom-input">
-                  <option class="text-white bg-dark" [value]="defaultPlan">{{ defaultPlan }}</option>
-                  @for (item of packageList; track item.id){
-                    <option class="text-white bg-dark" value="{{ item.name }}">{{ item.name }} Package  - ₹{{ item.cost }}</option>
+                <select formControlName="planPackage" class="form-select custom-input"
+                  (change)="onSelectedPackage($event)">
+                  <option class="text-white bg-dark" value="" disabled>
+                    Select your package
+                  </option>
+
+                  @for (pg of packageList; track pg.id) {
+                  <option class="text-white bg-dark" [value]="pg.id">
+                    {{ pg.name }} Package
+                  </option>
                   }
-                </select>
-                <div *ngIf="packageError" class="text-warning small mt-2">{{ packageError }}</div>
+
+                  <!-- <option class="text-white bg-dark" [value]="defaultPlan">{{ defaultPlan }}</option>
+                  @for (pg of packageList; track pg.id){
+                    <option class="text-white bg-dark" [value]="pg.id">{{ pg.name }} Package</option>
+                  }-->
+                </select> 
+                  <div *ngIf="packageError" class="text-warning small mt-2">{{ packageError }}</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-uppercase text-warning">Amount</label>
+
+                <input type="text" formControlName="cost" class="form-control custom-input" placeholder="Rs" value=""
+                  readonly>
               </div>
 
               <!-- Confirmation Trigger Button Action -->
-              <div class="col-12 mt-5">
-                <button type="submit" [disabled]="isSaving" class="btn btn-warning w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
-                  {{ isSaving ? 'Saving...' : 'Confirm Booking Appointment' }}
-                </button>
+              <div class="row">
+                <div class="col-6 mt-5">
+                  <button (click)="goBack()" type="button"
+                    class="btn btn-danger w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
+                    Cancle
+                  </button>
+                </div>
+                <div class="col-6 mt-5">
+                  <button type="submit" [disabled]="isSaving"
+                    class="btn btn-warning w-100 py-3 text-uppercase fw-black tracking-wider text-black rounded-pill custom-btn">
+                    {{ isSaving ? 'Saving...' : 'Book Appointment' }}
+                  </button>
+                </div>
+
               </div>
 
             </div>

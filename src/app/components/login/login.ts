@@ -39,8 +39,11 @@ export class Login {
 
     this.http.post<any>('http://localhost:8080/api/auth/login', this.loginData)
       .subscribe({
-        next: (res: { userId: number; token?: string }) => {
-          this.authService.login(res.userId, res.token);
+        next: (res) => {
+
+          // console.log('JWT received:', res.token);
+          // console.log('userID received:', res.userId);
+          this.authService.login(res.token, res.userId);
           this.isLoading.set(false);
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID); // Moved to the top for clean loading
@@ -23,18 +24,20 @@ export class AuthService {
   private hasToken(): boolean {
     if (isPlatformBrowser(this.platformId)) {
       // Checked both keys since you are using 'userId' for session tracking
-      return !!localStorage.getItem('userId') || !!localStorage.getItem('token');
+      // return !!localStorage.getItem('userId') || !!localStorage.getItem('token');
+      return !!localStorage.getItem('token');
     }
     return false; // Safe fallback for Node.js server environment
   }
 
-  login(userId: string | number, token?: string): void {
+  login(token: string, userId: number): void {
+
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('userId', String(userId));
-      if (token) {
+
         localStorage.setItem('token', token);
-      }
-      this.isLoggedIn.set(true);
+        localStorage.setItem('userId', String(userId));
+
+        this.isLoggedIn.set(true);
     }
   }
 
@@ -45,6 +48,14 @@ export class AuthService {
       this.isLoggedIn.set(false);
     }
     this.router.navigate(['/home']);
+  }
+
+  getToken(): string | null {
+    if(isPlatformBrowser(this.platformId)){
+        return localStorage.getItem('token');
+    }
+
+    return null;
   }
 
   getUserId(): number | null {

@@ -37,11 +37,11 @@ export class Profile implements OnInit {
   userId: number | null = null;
 
   userProfile: UserProfile = {
-    name: 'Customer',
+    name: '',
     email: '',
     mobile: '',
-    avatar: 'img/man-avatar-icon.png',
-    membership: 'Member',
+    avatar: '',
+    membership: '',
     totalWashes: 0,
     totalBike: 0,
     totalCar: 0,
@@ -65,12 +65,12 @@ export class Profile implements OnInit {
     this.loadAppointments(this.userId);
 
   }
-  
+
   private loadUser(userId: number): void {
     this.UserService.getUserById(userId).subscribe({
-      next : (user) => {
+      next: (user) => {
         this.userProfile = {
-           ...this.userProfile,
+          ...this.userProfile,
           name: user.name,
           email: user.email,
           mobile: user.mobile,
@@ -86,25 +86,78 @@ export class Profile implements OnInit {
     });
   }
 
+  // private loadAppointments(userId: number): void {
+  //   this.isLoading.set(true);
+  //   this.errorMessage.set('');
+  //   this.appointmentService.getAppointmentsByUserId(userId).subscribe({
+  //     next: (appointments) => {
+  //       this.pastBookingsList = appointments;
+  //       const delivered = appointments.filter((booking) => booking.washStatus === 'Delivered' || booking.washStatus === 'Done');
+  //       this.userProfile.totalWashes = delivered.length;
+  //       this.userProfile.totalCar = delivered.filter((booking) => booking.vehicleType === 'Car').length;
+  //       this.userProfile.totalBike = delivered.filter((booking) => booking.vehicleType === 'Bike').length;
+  //       this.userProfile.activeBookings = appointments.filter((booking) => !['Delivered', 'Done', 'Cancelled'].includes(booking.washStatus)).length;
+  //       this.persistProfile();
+  //       this.isLoading.set(false);
+  //     },
+  //     error: (error: unknown) => {
+  //       console.error('Unable to load profile bookings:', error);
+  //       this.errorMessage.set('We could not load your booking statistics.');
+  //       this.isLoading.set(false);
+  //     },
+  //   });
+  // }
+
+// Confirmed = 1
+// Washing   = 2
+// Ready     = 3
+// Cancelled = 4
+
   private loadAppointments(userId: number): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
     this.appointmentService.getAppointmentsByUserId(userId).subscribe({
       next: (appointments) => {
-        this.pastBookingsList = appointments;
-        const delivered = appointments.filter((booking) => booking.washStatus === 'Delivered' || booking.washStatus === 'Done');
-        this.userProfile.totalWashes = delivered.length;
-        this.userProfile.totalCar = delivered.filter((booking) => booking.vehicleType === 'Car').length;
-        this.userProfile.totalBike = delivered.filter((booking) => booking.vehicleType === 'Bike').length;
-        this.userProfile.activeBookings = appointments.filter((booking) => !['Delivered', 'Done', 'Cancelled'].includes(booking.washStatus)).length;
+        // console.log('User Appointments:', appointments);
+        this.pastBookingsList = appointments; // Store all bookings
+        // Completed/Delivered washes
+        const deliveredBookings = appointments.filter(
+          booking => booking.washStatus?.toLowerCase() === 'delivered'
+        );
+
+        // Total washes
+        this.userProfile.totalWashes = deliveredBookings.length;
+
+        // Total completed car washes
+        this.userProfile.totalCar = deliveredBookings.filter(
+          booking => booking.vehicleType?.toLowerCase() === 'car'
+        ).length;
+
+        // Total completed bike washes
+        this.userProfile.totalBike = deliveredBookings.filter(
+          booking => booking.vehicleType?.toLowerCase() === 'bike'
+        ).length;
+
+        // Active bookings
+        this.userProfile.activeBookings = appointments.filter(
+          booking => {
+            const status = booking.washStatus?.toLowerCase();
+            return status !== 'delivered' &&
+              status !== 'cancelled';
+          }
+        ).length;
+        console.log('Total Washes:', this.userProfile.totalWashes);
+        console.log('Total Cars:', this.userProfile.totalCar);
+        console.log('Total Bikes:', this.userProfile.totalBike);
+        console.log('Active Bookings:', this.userProfile.activeBookings);
         this.persistProfile();
         this.isLoading.set(false);
       },
       error: (error: unknown) => {
-        console.error('Unable to load profile bookings:', error);
-        this.errorMessage.set('We could not load your booking statistics.');
+        console.error('Unable to load profile bookings:', error );
+        this.errorMessage.set( 'We could not load your booking statistics.' );
         this.isLoading.set(false);
-      },
+      }
     });
   }
 
@@ -126,4 +179,29 @@ export class Profile implements OnInit {
   private persistProfile(): void {
     if (this.userId) this.authService.saveLocalProfile(this.userId, this.userProfile);
   }
+
+  getStatusClass(status: string | undefined): string {
+    switch (status?.toLowerCase()) {
+      case 'confirmed':
+        return 'bg-primary text-white';
+
+      case 'washing':
+        return 'bg-warning text-dark';
+
+      case 'ready':
+        return 'bg-info text-dark';
+
+      case 'cancelled':
+        return 'bg-danger text-white';
+
+      case 'delivered':
+      case 'done':
+        return 'bg-success text-white';
+
+      default:
+        return 'bg-secondary text-white';
+    }
+  }
+
+
 }

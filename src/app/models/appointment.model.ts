@@ -9,7 +9,7 @@ export interface Appointment {
   vehicleModel: string;
   vehicleColor: string;
   vehicleNumber: string;
-  plan: string;
+  plan: number;
   price: number;
   washStatus: string;
   date: string;

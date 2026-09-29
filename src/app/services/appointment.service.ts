@@ -29,4 +29,12 @@ export class AppointmentService {
     return this.http.delete<void>(`${this.baseUrl}/deleteAppointment/${id}`);
   }
 
+  cancelAppointment(id: number): Observable<Appointment> {
+    console.log("Appointment Service runn :");
+  return this.http.put<Appointment>( `${this.baseUrl}/cancelAppointment/${id}`,
+    {
+
+    });
+}
+
 }

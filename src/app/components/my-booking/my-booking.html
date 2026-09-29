@@ -31,11 +31,8 @@
                                 <h4 class="fw-black text-warning m-0 text-uppercase tracking-wide">Live Active Order</h4>
 
                                 <!-- Dynamic Badge reflecting current row selected state status -->
-                                <span [ngClass]="{
-                                        'bg-warning text-dark': booking.status !== 'Delivered' && booking.status !== 'Done',
-                                        'bg-success text-white': booking.status === 'Delivered' || booking.status === 'Done'
-                                    }" class="badge fw-bold rounded-pill px-3 py-2 animate-pulse-badge">
-                                    {{ booking.status }}
+                                <span [ngClass]="getStatusClass(booking.status)" class="badge fw-bold rounded-pill px-3 py-2 animate-pulse-badge">
+                                  {{ booking.status }}
                                 </span>
                             </div>
 
@@ -63,12 +60,12 @@
                                 </div>
                                 <div class="col-6">
                                     <span class="text-white-50 small d-block">Total Net Cost</span>
-                                    <strong class="text-success fs-5">₹{{ booking.cost }}</strong>
+                                    <strong class="text-success fs-5">₹{{ booking.cost }}/-</strong>
                                 </div>
                             </div>
 
                             <!-- Linear Step-by-Step Status Tracking Timeline Graphic -->
-                            <div *ngIf="booking.currentStep > 0">
+                            <div *ngIf="booking.currentStep != 0 && booking.currentStep != 4">
                                 <div class="d-flex justify-content-between align-items-center ">
                                     <h5 class="fw-bold text-white-50 text-uppercase fs-7 tracking-wider">
                                         Live Wash Progress
@@ -124,6 +121,18 @@
                                 </div>
                             </div>
 
+                            <!-- Cancel appointment  -->
+                            <div *ngIf="booking.currentStep === 4">
+                                <span class="small text-white-50">
+                                        <div>Cancelled on </div>    
+                                        <div>{{ booking.updatedAt | date:'medium' }}</div>
+                                    </span>
+                                <div
+                                    class="alert alert-secondary bg-danger border-secondary border-opacity-25 text-white mb-5 text-center">
+                                    🎉 This order has been cancelled please contact admin.
+                                </div>
+                            </div>
+
                             <!-- Cancellation Safety Trigger Button -->
                             <div class="text-end mt-4">
                                 <button (click)="cancelBooking(booking)"
@@ -131,7 +140,7 @@
                                     class="btn btn-sm btn-outline-danger rounded-pill px-4 py-2 fw-semibold btn-cancel-animate">
                                     Cancel Wash Appointment
                                 </button>
-                                <small *ngIf="booking.currentStep > 1" class="text-white-50 d-block mt-2 fs-7 italic">
+                                <small *ngIf="booking.currentStep > 1 || booking.currentStep == 4" class="text-white-50 d-block mt-2 fs-7 italic">
                                     *Order cannot be cancelled once washing begins.
                                 </small>
                             </div>
@@ -168,22 +177,18 @@
                                 <div>
                                     <div class="d-flex align-items-center gap-2 mb-1">
                                         <span class="fw-bold text-white fs-6">{{ item.id }}</span>
-                                        <span [ngClass]="{
-                                                'bg-success text-success': item.status === 'Delivered' || item.status === 'Done',
-                                                'bg-warning text-warning': item.status !== 'Delivered' && item.status !== 'Done'
-                                              }"
-                                            class="badge bg-opacity-10 border border-opacity-25 extra-small rounded-pill px-2 py-0.5">
+                                        <span [ngClass]="getStatusClass(item.status)"
+                                            class="badge  border border-opacity-25 extra-small rounded-pill px-2 py-0.5">
                                             {{ item.status }}
                                         </span>
                                         
                                     </div>
                                     <small class="text-white-50 d-block mb-1">{{ item.vehicle }}</small>    
-                                    <small class="text-white-50 d-block mb-1">{{ item.service }} • {{ item.date
-                                        }}</small>
+                                    <small class="text-white-50 d-block mb-1">{{ item.service }} • {{ item.date}}</small>
                                     <!-- <span class="extra-small text-muted fw-mono">{{ item.id }}</span> -->
                                 </div>
                                 <div class="text-end">
-                                    <span class="fw-black text-warning fs-5">₹{{ item.cost }}</span>
+                                    <span class="fw-black text-warning fs-5">₹{{ item.cost }}/-</span>
 
                                 </div>
                             </div>

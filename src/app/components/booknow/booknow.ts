@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -23,12 +23,12 @@ export class Booknow implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  readonly defaultPlan = 'Eco Washing Pack';
+  readonly defaultPlan = 'Selecte your package';
   bookingForm!: FormGroup;
   isSubmitted = false;
   isSaving = false;
   packageError = '';
-  
+
   userData: User | null = null;
 
   bikeBrands = ['Royal Enfield', 'KTM', 'Yamaha', 'Honda', 'Suzuki'];
@@ -62,9 +62,9 @@ export class Booknow implements OnInit {
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: '/booknow' }
       });
-    return;
+      return;
     }
-    
+
     this.loadUser(userId);
 
     this.bookingForm.controls['vehicleType'].valueChanges.subscribe((type: string) => {
@@ -89,24 +89,48 @@ export class Booknow implements OnInit {
     });
   }
 
-private loadUser(userId: number): void {
+  onSelectedPackage(event: Event): void {
 
-  this.userService.getUserById(userId).subscribe({
-    next: (data: User) => { 
-       this.userData = data; 
-       console.log('User data loaded successfully:', this.userData);
-       
-       this.bookingForm.patchValue({
-          customerName: data.name, 
-          mobileNumber: data.mobile,
-       });
-    },
-    error: (error: unknown) => {
-      console.error('Unable to load User:', error);
-      this.packageError = 'User could not be loaded.';
+    const packageId = Number(
+      (event.target as HTMLSelectElement).value
+    );
+
+    // const selectedPackage = this.packageList.find(
+    //   pg => pg.id === packageId
+    // );
+    const selectedPackage = this.packageList.find(
+      pg => Number(pg.id) === packageId
+    );
+
+    if (selectedPackage) {
+      this.bookingForm.patchValue({
+        cost: selectedPackage.cost
+      });
+    } else {
+      this.bookingForm.patchValue({
+        cost: ''
+      });
     }
-  });
-}
+  }
+
+  private loadUser(userId: number): void {
+
+    this.userService.getUserById(userId).subscribe({
+      next: (data: User) => {
+        console.log('User data :', data);
+        this.userData = data;
+
+        this.bookingForm.patchValue({
+          customerName: data.name,
+          mobileNumber: data.mobile,
+        });
+      },
+      error: (error: unknown) => {
+        console.error('Unable to load User:', error);
+        this.packageError = 'User could not be loaded.';
+      }
+    });
+  }
 
 
   private setTodayDateLimit(): void {
@@ -123,8 +147,15 @@ private loadUser(userId: number): void {
       vehicleModel: ['', Validators.required],
       vehicleColor: ['', Validators.required],
       vehicleNumber: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z]{1,2}[0-9]{4}$')]],
-      planPackage: [this.defaultPlan, Validators.required],
+      planPackage: ['', Validators.required],
+      cost: ['', Validators.required],
     });
+  }
+
+  constructor(private location: Location) { }
+
+  goBack() {
+    this.location.back();
   }
 
   get f() {
@@ -132,9 +163,9 @@ private loadUser(userId: number): void {
   }
 
   onSubmit(): void {
+
     this.isSubmitted = true;
     if (this.bookingForm.invalid || this.isSaving) return;
-
     const userId = this.authService.getUserId();
     if (!userId) {
       this.router.navigate(['/login'], { queryParams: { returnUrl: '/booknow' } });
@@ -144,20 +175,27 @@ private loadUser(userId: number): void {
     this.isSaving = true;
     const value = this.bookingForm.getRawValue();
 
-    this.appointmentService.createAppointment({
-      userid: userId,
-      customerName: value.customerName.trim(),
+    const appointmentData = {
+      userid: Number(userId),
+      name: value.customerName.trim(),
       mobileNumber: value.mobileNumber,
       vehicleType: value.vehicleType,
       vehicleBrand: value.vehicleBrand,
       vehicleModel: value.vehicleModel,
       vehicleColor: value.vehicleColor.trim(),
       vehicleNumber: value.vehicleNumber.trim().toUpperCase(),
-      plan: value.planPackage,
-      date: value.bookingDate,
-    }).subscribe({
-      next: () => {
-        this.bookingForm.reset({ planPackage: this.defaultPlan });
+      plan: Number(value.planPackage),
+      price: Number(value.cost),
+      date: value.bookingDate
+    };
+    console.log('Appointment payload:', appointmentData);
+
+    this.appointmentService.createAppointment(appointmentData).subscribe({
+      next: (response) => {
+
+        console.log('Appointment created successfully:', response);
+        this.bookingForm.reset({planPackage: '', cost: '' });
+
         this.isSubmitted = false;
         this.isSaving = false;
         this.availableBrands = [];
@@ -167,7 +205,7 @@ private loadUser(userId: number): void {
       error: (error: unknown) => {
         console.error('Unable to save appointment:', error);
         this.isSaving = false;
-      },
+      }
     });
   }
 }
