@@ -10,7 +10,7 @@ import { Package } from '../../models/package.model';
 
 interface BookingView {
   id: string;
-  rawId: number;
+  b_Id: number;
   date: string;
   vehicle: string;
   registration: string;
@@ -48,19 +48,12 @@ export class Mybooking implements OnInit {
 
   loadWashHistory(): void {
     const userId = this.authService.getUserId();
+    const email = this.authService.getEmail();
+    console.log('email data :', email);
 
-    if (!userId) {
-      this.router.navigate(
-        ['/login'],
-        {
-          queryParams: {
-            returnUrl: '/mybooking'
-          }
-        }
-      );
-
-      return;
-    }
+    if (!userId || !email) {
+    return;
+  }
 
     this.isLoading = true;
     this.errorMessage = '';
@@ -71,8 +64,8 @@ export class Mybooking implements OnInit {
         console.log('Packages:', packages);
 
         this.packageList = packages;
-        // Then load appointments
-        this.loadAppointments(userId);
+        // this.loadAppointments(userId);
+        this.loadAppointments(email);
       },
       error: (error) => {
         console.error('Unable to load packages:', error);
@@ -83,13 +76,43 @@ export class Mybooking implements OnInit {
     });
   }
 
-  private loadAppointments(userId: number): void {
+  // private loadAppointments(userId: number): void {
 
-    this.appointmentService.getAppointmentsByUserId(userId).subscribe({
+  //   this.appointmentService.getAppointmentsByUserId(userId).subscribe({
+  //     next: (appointments) => {
+  //       // console.log('Appointments:', appointments);
+
+  //       const bookings = appointments 
+  //         .map((item) =>
+  //           this.toBookingView(item)
+  //         )
+  //         .sort((a, b) =>
+  //           new Date(b.updatedAt).getTime() -
+  //           new Date(a.updatedAt).getTime()
+  //         );
+
+  //       this.pastBookings.set(bookings);
+
+  //       this.activeBooking.set(bookings[0] ?? null);
+  //       this.isLoading = false;
+  //     },
+
+  //     error: (error: unknown) => {
+  //       console.error('Unable to load booking history:', error);
+  //       this.errorMessage = 'We could not load your bookings. Please try again.';
+  //       this.isLoading = false;
+  //     }
+  //   });
+  // }
+  
+
+  private loadAppointments(email: string): void {
+
+    this.appointmentService.getAppointmentsByEmailId(email).subscribe({
       next: (appointments) => {
-        console.log('Appointments:', appointments);
+        // console.log('Appointments:', appointments);
 
-        const bookings = appointments
+        const bookings = appointments 
           .map((item) =>
             this.toBookingView(item)
           )
@@ -115,7 +138,7 @@ export class Mybooking implements OnInit {
   private toBookingView(item: Appointment): BookingView {
     return {
       id: `#CW-${item.id}`,
-      rawId: item.id,
+      b_Id: item.id,
       date: item.date,
       vehicle: `${item.vehicleBrand} ${item.vehicleModel} (${item.vehicleColor})`,
       registration: item.vehicleNumber,
@@ -130,11 +153,10 @@ export class Mybooking implements OnInit {
 
   private getPackageName(packageId: number): string {
 
-    const selectedPackage = this.packageList.find(
-      pg => pg.id === packageId
-    );
-
-    return selectedPackage ? selectedPackage.name : 'Unknown Package';
+    const selectedPackage = this.packageList.find( pg => pg.id === packageId );
+    const getPackageName = selectedPackage ? selectedPackage.name : 'Unknown Package';
+    //const packageName = getPackageName.substring(0,15) + "...";
+    return getPackageName;
   }
 
   selectBookingForDetails(booking: BookingView): void {
@@ -147,10 +169,10 @@ export class Mybooking implements OnInit {
       return;
     }
 
-    this.appointmentService.cancelAppointment(booking.rawId).subscribe({
+    this.appointmentService.cancelAppointment(booking.b_Id).subscribe({
       next: (UpdateAppointment) => {
 
-        const remaining = this.pastBookings().filter(item => item.rawId !== booking.rawId);
+        const remaining = this.pastBookings().filter(item => item.b_Id !== booking.b_Id);
         this.pastBookings.set(remaining);
         this.activeBooking.set(remaining[0] ?? null);
 
@@ -162,10 +184,10 @@ export class Mybooking implements OnInit {
       }
     });
 
-    // this.appointmentService.deleteAppointment(booking.rawId).subscribe({
+    // this.appointmentService.deleteAppointment(booking.b_Id).subscribe({
     //   next: () => {
     //     const remaining = this.pastBookings()
-    //       .filter(item => item.rawId !== booking.rawId);
+    //       .filter(item => item.b_Id !== booking.b_Id);
 
     //     this.pastBookings.set(remaining);
     //     this.activeBooking.set(remaining[0] ?? null);

@@ -4,18 +4,34 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 export const authGuard: CanActivateFn = (_route, state) => {
+
   const authService = inject(AuthService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
-  // Server-side rendering cannot access browser localStorage. Let the browser
-  // perform the authentication check after hydration instead of redirecting
-  // a valid session to login during a page refresh.
+  // During server-side rendering,
+  // don't redirect the user to login.
   if (!isPlatformBrowser(platformId)) {
     return true;
   }
 
-  return authService.isLoggedIn()
-    ? true
-    : router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+  // Check the actual token stored in localStorage.
+  const token = authService.getToken();
+
+  console.log('Auth Guard - Token:', token ? 'EXISTS' : 'NOT FOUND');
+
+  if (token) {
+    return true;
+  }
+
+  console.log('Auth Guard - Redirecting to login');
+
+  return router.createUrlTree(
+    ['/login'],
+    {
+      queryParams: {
+        returnUrl: state.url
+      }
+    }
+  );
 };

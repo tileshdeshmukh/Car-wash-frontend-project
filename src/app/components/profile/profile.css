@@ -81,6 +81,69 @@
   animation: slideInFrame 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.booking-table {
+  width: 100%;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.booking-table th {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 16px 12px;
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
+}
+
+.booking-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #262626;
+  vertical-align: middle;
+}
+
+/* ID */
+.booking-id {
+  color: #ffc107;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Date */
+.booking-date {
+  color: #999;
+  white-space: nowrap;
+}
+
+/* Vehicle */
+.booking-table td:nth-child(3) {
+  min-width: 130px;
+}
+
+/* Service */
+.booking-service {
+  min-width: 150px;
+  max-width: 180px;
+}
+
+/* Cost */
+.booking-cost {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Status */
+.booking-table td:last-child {
+  white-space: nowrap;
+}
+
+.booking-history-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
 @keyframes fadeUpFrame {
   0% { opacity: 0; transform: translateY(25px); }
   100% { opacity: 1; transform: translateY(0); }

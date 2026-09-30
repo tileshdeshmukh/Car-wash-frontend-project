@@ -184,7 +184,7 @@
                                         
                                     </div>
                                     <small class="text-white-50 d-block mb-1">{{ item.vehicle }}</small>    
-                                    <small class="text-white-50 d-block mb-1">{{ item.service }} • {{ item.date}}</small>
+                                    <small class="text-white-50 d-block mb-1">{{ item.service.substring(0, 16) }}... | {{ item.date}}</small>
                                     <!-- <span class="extra-small text-muted fw-mono">{{ item.id }}</span> -->
                                 </div>
                                 <div class="text-end">

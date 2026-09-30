@@ -41,9 +41,9 @@ export class Login {
       .subscribe({
         next: (res) => {
 
-          // console.log('JWT received:', res.token);
-          // console.log('userID received:', res.userId);
-          this.authService.login(res.token, res.userId);
+          // console.log('JWT received:', res);
+
+          this.authService.login(res.token, res.userId, res.email);
           this.isLoading.set(false);
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);

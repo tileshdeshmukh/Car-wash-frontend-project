@@ -29,6 +29,9 @@ export class Booknow implements OnInit {
   isSaving = false;
   packageError = '';
 
+  successMessage = '';
+  errorMessage = '';
+
   userData: User | null = null;
 
   bikeBrands = ['Royal Enfield', 'KTM', 'Yamaha', 'Honda', 'Suzuki'];
@@ -59,9 +62,9 @@ export class Booknow implements OnInit {
     this.loadPackages();
 
     if (!userId) {
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/booknow' }
-      });
+      // this.router.navigate(['/login'], {
+      //   queryParams: { returnUrl: '/booknow' }
+      // });
       return;
     }
 
@@ -117,13 +120,17 @@ export class Booknow implements OnInit {
 
     this.userService.getUserById(userId).subscribe({
       next: (data: User) => {
-        console.log('User data :', data);
+        console.log('FULL USER DATA:', data);
+
         this.userData = data;
 
         this.bookingForm.patchValue({
           customerName: data.name,
+          email: data.email,
           mobileNumber: data.mobile,
         });
+
+
       },
       error: (error: unknown) => {
         console.error('Unable to load User:', error);
@@ -141,6 +148,7 @@ export class Booknow implements OnInit {
     this.bookingForm = this.fb.group({
       customerName: ['', [Validators.required, Validators.minLength(3)]],
       mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', Validators.required],
       bookingDate: ['', Validators.required],
       vehicleType: ['', Validators.required],
       vehicleBrand: ['', Validators.required],
@@ -178,6 +186,7 @@ export class Booknow implements OnInit {
     const appointmentData = {
       userid: Number(userId),
       name: value.customerName.trim(),
+      email: value.email,
       mobileNumber: value.mobileNumber,
       vehicleType: value.vehicleType,
       vehicleBrand: value.vehicleBrand,
@@ -192,18 +201,34 @@ export class Booknow implements OnInit {
 
     this.appointmentService.createAppointment(appointmentData).subscribe({
       next: (response) => {
+        // console.log('Appointment created successfully:', response);
+        this.successMessage = 'Appointment created successfully!';
+        this.errorMessage = '';
 
-        console.log('Appointment created successfully:', response);
-        this.bookingForm.reset({planPackage: '', cost: '' });
+        this.bookingForm.reset({
+          customerName: this.userData?.name ?? '',
+          email: this.userData?.email ?? '',
+          mobileNumber: this.userData?.mobile ?? '',
+          planPackage: '',
+          cost: '',
+          bookingDate: '',
+          vehicleType: '',
+          vehicleBrand: '',
+          vehicleModel: '',
+          vehicleColor: '',
+          vehicleNumber: ''
+        });
 
         this.isSubmitted = false;
         this.isSaving = false;
         this.availableBrands = [];
         this.availableModels = [];
-        this.router.navigate(['/mybooking']);
+        this.router.navigate(['/booknow']);
       },
       error: (error: unknown) => {
         console.error('Unable to save appointment:', error);
+        this.successMessage = '';
+        this.errorMessage = 'Unable to create appointment. Please try again.';
         this.isSaving = false;
       }
     });

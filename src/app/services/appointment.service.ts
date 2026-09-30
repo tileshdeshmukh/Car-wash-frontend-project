@@ -20,6 +20,10 @@ export class AppointmentService {
     return this.http.get<Appointment[]>(`${this.baseUrl}/getAllAppointmentByUserId/${userId}`);
   }
 
+  getAppointmentsByEmailId(email: string): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/getAllAppointmentByEmail/${email}`);
+  }
+
   // NEW: POST method to add appointment
   createAppointment(appointmentData: Partial<Appointment>): Observable<Appointment> {
     return this.http.post<Appointment>(`${this.baseUrl}/addAppointment`, appointmentData);

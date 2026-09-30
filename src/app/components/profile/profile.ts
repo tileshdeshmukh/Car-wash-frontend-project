@@ -6,6 +6,8 @@ import { AppointmentService } from '../../services/appointment.service';
 import { AuthService } from '../../services/auth.service';
 import { Appointment } from '../../models/appointment.model';
 import { User } from '../../models/user.model';
+import { PackageService } from '../../services/package.service';
+import { Package } from '../../models/package.model';
 import { UserService } from '../../services/user.service';
 
 interface UserProfile {
@@ -28,6 +30,7 @@ interface UserProfile {
 })
 export class Profile implements OnInit {
   private appointmentService = inject(AppointmentService);
+  private packageService = inject(PackageService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private UserService = inject(UserService);
@@ -51,19 +54,44 @@ export class Profile implements OnInit {
   pastBookingsList: Appointment[] = [];
   isEditMode = false;
   tempProfile: UserProfile = { ...this.userProfile };
+  packageList: Package[] = [];
 
   ngOnInit(): void {
 
-    this.userId = this.authService.getUserId();
+    const userId = this.authService.getUserId();
+    const email = this.authService.getEmail();
 
-    if (!this.userId) {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: '/profile' } });
+    if (!userId || !email) {
       return;
     }
 
-    this.loadUser(this.userId);
-    this.loadAppointments(this.userId);
+    this.userId = userId;
 
+    this.loadUser(userId);
+
+    this.packageService.getAllPackages().subscribe({
+      next: (packages) => {
+        console.log('Packages:', packages);
+
+        this.packageList = packages;
+
+        this.loadAppointments(email);
+      },
+      error: (error) => {
+        console.error('Unable to load packages:', error);
+
+        this.errorMessage.set('Unable to load package information.');
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  private getPackageName(packageId: number): string {
+
+    const selectedPackage = this.packageList.find( pg => pg.id === packageId );
+    const getPackageName = selectedPackage ? selectedPackage.name : 'Unknown Package';
+    //const packageName = getPackageName.substring(0,15) + "...";
+    return getPackageName;
   }
 
   private loadUser(userId: number): void {
@@ -86,17 +114,44 @@ export class Profile implements OnInit {
     });
   }
 
+  // Confirmed = 1
+  // Washing   = 2
+  // Ready     = 3
+  // Cancelled = 4
+
   // private loadAppointments(userId: number): void {
   //   this.isLoading.set(true);
   //   this.errorMessage.set('');
   //   this.appointmentService.getAppointmentsByUserId(userId).subscribe({
   //     next: (appointments) => {
-  //       this.pastBookingsList = appointments;
-  //       const delivered = appointments.filter((booking) => booking.washStatus === 'Delivered' || booking.washStatus === 'Done');
-  //       this.userProfile.totalWashes = delivered.length;
-  //       this.userProfile.totalCar = delivered.filter((booking) => booking.vehicleType === 'Car').length;
-  //       this.userProfile.totalBike = delivered.filter((booking) => booking.vehicleType === 'Bike').length;
-  //       this.userProfile.activeBookings = appointments.filter((booking) => !['Delivered', 'Done', 'Cancelled'].includes(booking.washStatus)).length;
+  //       // console.log('User Appointments:', appointments);
+  //       this.pastBookingsList = appointments; // Store all bookings
+  //       // Completed/Delivered washes
+  //       const deliveredBookings = appointments.filter(
+  //         booking => booking.washStatus?.toLowerCase() === 'delivered'
+  //       );
+
+  //       // Total washes
+  //       this.userProfile.totalWashes = deliveredBookings.length;
+
+  //       // Total completed car washes
+  //       this.userProfile.totalCar = deliveredBookings.filter(
+  //         booking => booking.vehicleType?.toLowerCase() === 'car'
+  //       ).length;
+
+  //       // Total completed bike washes
+  //       this.userProfile.totalBike = deliveredBookings.filter(
+  //         booking => booking.vehicleType?.toLowerCase() === 'bike'
+  //       ).length;
+
+  //       // Active bookings
+  //       this.userProfile.activeBookings = appointments.filter(
+  //         booking => {
+  //           const status = booking.washStatus?.toLowerCase();
+  //           return status !== 'delivered' &&
+  //             status !== 'cancelled';
+  //         }
+  //       ).length;
   //       this.persistProfile();
   //       this.isLoading.set(false);
   //     },
@@ -104,19 +159,14 @@ export class Profile implements OnInit {
   //       console.error('Unable to load profile bookings:', error);
   //       this.errorMessage.set('We could not load your booking statistics.');
   //       this.isLoading.set(false);
-  //     },
+  //     }
   //   });
   // }
 
-// Confirmed = 1
-// Washing   = 2
-// Ready     = 3
-// Cancelled = 4
-
-  private loadAppointments(userId: number): void {
+  private loadAppointments(email: string): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.appointmentService.getAppointmentsByUserId(userId).subscribe({
+    this.appointmentService.getAppointmentsByEmailId(email).subscribe({
       next: (appointments) => {
         // console.log('User Appointments:', appointments);
         this.pastBookingsList = appointments; // Store all bookings
@@ -146,16 +196,12 @@ export class Profile implements OnInit {
               status !== 'cancelled';
           }
         ).length;
-        console.log('Total Washes:', this.userProfile.totalWashes);
-        console.log('Total Cars:', this.userProfile.totalCar);
-        console.log('Total Bikes:', this.userProfile.totalBike);
-        console.log('Active Bookings:', this.userProfile.activeBookings);
         this.persistProfile();
         this.isLoading.set(false);
       },
       error: (error: unknown) => {
-        console.error('Unable to load profile bookings:', error );
-        this.errorMessage.set( 'We could not load your booking statistics.' );
+        console.error('Unable to load profile bookings:', error);
+        this.errorMessage.set('We could not load your booking statistics.');
         this.isLoading.set(false);
       }
     });

@@ -30,12 +30,13 @@ export class AuthService {
     return false; // Safe fallback for Node.js server environment
   }
 
-  login(token: string, userId: number): void {
+  login(token: string, userId: number, email: string): void {
 
     if (isPlatformBrowser(this.platformId)) {
 
         localStorage.setItem('token', token);
         localStorage.setItem('userId', String(userId));
+        localStorage.setItem('email', String(email));
 
         this.isLoggedIn.set(true);
     }
@@ -63,6 +64,13 @@ export class AuthService {
       const id = localStorage.getItem('userId');
       const parsedId = id ? Number(id) : NaN;
       return Number.isSafeInteger(parsedId) && parsedId > 0 ? parsedId : null;
+    }
+    return null; // Safe fallback for Node.js server environment
+  }
+
+  getEmail(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('email');
     }
     return null; // Safe fallback for Node.js server environment
   }
